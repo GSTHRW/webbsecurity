@@ -8,19 +8,24 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <title>My Store</title>
+    <link rel="stylesheet" href="php/styles.css">
 </head>
 <body>
-    <h1>Products</h1>
-    <?php foreach ($products as $product): ?>
-        <div>
-            <h2><?= $product['name']; ?></h2>
-            <p>Price: $<?= $product['price']; ?></p>
-            <p>Days old: <?= $product['age']; ?></p>
-            <form action="cart.php" method="POST">
-                <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-                <button type="submit">Add to Cart</button>
-            </form>
+    <div class="container">
+        <h1>Products</h1>
+        <div class="product-list">
+            <?php foreach ($products as $product): ?>
+                <div class="product-container">
+                    <h2 class="product-name"><?= htmlspecialchars($product['name']); ?></h2>
+                    <p class="product-price">Price: $<?= htmlspecialchars($product['price']); ?></p>
+                    <p class="product-age">Days old: <?= htmlspecialchars($product['age']); ?></p>
+                    <form action="cart.php" method="POST">
+                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
+                        <button class="add-to-cart" type="submit">Add to Cart</button>
+                    </form>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
+    </div>
 </body>
 </html>

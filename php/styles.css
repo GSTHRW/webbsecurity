@@ -1,0 +1,73 @@
+/* General Reset */
+body, h1, h2, p, div, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* Container for the entire page */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Page title */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* Product list styling */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* Individual product container styling */
+.product-container {
+    background: #fff;
+    border: 2px solid #ddd; /* Add a solid border to each product container */
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1 1 calc(33.33% - 20px); /* Makes it responsive with 3 items per row */
+    max-width: calc(33.33% - 20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Product name styling */
+.product-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+/* Product price styling */
+.product-price {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: #28a745;
+}
+
+/* Product age styling */
+.product-age

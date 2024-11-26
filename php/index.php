@@ -8,7 +8,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <title>My Store</title>
-    <link rel="stylesheet" href="php/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">

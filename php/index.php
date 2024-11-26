@@ -16,6 +16,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="product-list">
             <?php foreach ($products as $product): ?>
                 <div class="product-container">
+                    <?php if (!empty($product['image_url'])): ?>
+                        <img src="<?= htmlspecialchars($product['image_url']); ?>" alt="<?= htmlspecialchars($product['name']); ?>" class="product-image">
+                    <?php endif; ?>
                     <h2 class="product-name"><?= htmlspecialchars($product['name']); ?></h2>
                     <p class="product-price">Price: $<?= htmlspecialchars($product['price']); ?></p>
                     <p class="product-age">Days old: <?= htmlspecialchars($product['age']); ?></p>

@@ -1,23 +1,3 @@
-  class main(){
-    constructor(){
-      this.products = []
-    }
-    addProduct(product){
-      this.products.push(product)
-    }
-    removeProduct(product){
-      this.products = this.products.filter(p => p !== product)
-    }
-  }
-
-
-  const products = [
-      new Product("Product 1", 100, "https://via.placeholder.com/150"),
-      new Product("Product 2", 200, "https://via.placeholder.com/150"),
-      new Product("Product 3", 300, "https://via.placeholder.com/150"),
-      new Product("Product 4", 400, "https://via.placeholder.com/150"),
-  ];
-
 
 <!doctype html>
 <html lang="sv">
@@ -31,9 +11,33 @@
             <h1>Min Webshop</h1>
         </header>
         <div class="container">
-          <script>
-          renderproducts();
-          </script>
+            <!-- Produkt 1 -->
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produkt 1" />
+                <h2>Produkt 1</h2>
+                <p>Pris: 100 kr</p>
+                <button onclick="addToCart('Produkt 1', 100)">
+                    Lägg till i varukorgen
+                </button>
+            </div>
+            <!-- Produkt 2 -->
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produkt 2" />
+                <h2>Produkt 2</h2>
+                <p>Pris: 200 kr</p>
+                <button onclick="addToCart('Produkt 2', 200)">
+                    Lägg till i varukorgen
+                </button>
+            </div>
+            <!-- Produkt 3 -->
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produkt 3" />
+                <h2>Produkt 3</h2>
+                <p>Pris: 300 kr</p>
+                <button onclick="addToCart('Produkt 3', 300)">
+                    Lägg till i varukorgen
+                </button>
+            </div>
         </div>
 
         <script>

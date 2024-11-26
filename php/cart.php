@@ -18,16 +18,21 @@ if (!empty($_SESSION['cart'])) {
 <html>
 <head>
     <title>Cart</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Your Cart</h1>
-    <?php foreach ($cartItems as $item): ?>
-        <div>
-            <h2><?= $item['name']; ?></h2>
-            <p>Quantity: <?= $_SESSION['cart'][$item['id']]; ?></p>
-            <p>Price: $<?= $item['price'] * $_SESSION['cart'][$item['id']]; ?></p>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <div class="cart-list">
+            <?php foreach ($cartItems as $item): ?>
+                <div class="cart-item-container">
+                    <h2 class="cart-item-name"><?= htmlspecialchars($item['name']); ?></h2>
+                    <p class="cart-item-quantity">Quantity: <?= $_SESSION['cart'][$item['id']]; ?></p>
+                    <p class="cart-item-price">Total Price: $<?= $item['price'] * $_SESSION['cart'][$item['id']]; ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
-    <a href="checkout.php">Proceed to Checkout</a>
+        <a href="checkout.php" class="proceed-to-checkout">Proceed to Checkout</a>
+    </div>
 </body>
 </html>

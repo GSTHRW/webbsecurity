@@ -79,5 +79,133 @@ h1 {
 
 /* Product age styling */
 .product-age{
-    
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    color: #666;
 }
+
+
+/* Cart page container styling */
+.cart-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* Individual cart item container styling */
+.cart-item-container {
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1 1 calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+
+.cart-item-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Cart item name styling */
+.cart-item-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+/* Cart item quantity styling */
+.cart-item-quantity {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Cart item price styling */
+.cart-item-price {
+    font-size: 1.2em;
+    color: #28a745;
+}
+
+/* Checkout button styling */
+.proceed-to-checkout {
+    display: inline-block;
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+}
+
+.proceed-to-checkout:hover {
+    background: #0056b3;
+}
+
+/* Checkout form styling */
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input field styling */
+.form-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Checkout button styling */
+.checkout-button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.checkout-button:hover {
+    background: #0056b3;
+}
+
+/* Success message styling */
+.success-message {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #28a745;
+    text-align: center;
+}
+
+/*
+Äpple https://files.oaiusercontent.com/file-2KvLgCWI9ksvUBZYyiQ80kLo?se=2024-11-26T12%3A00%3A13Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D13c03ebe-a1e3-4e77-8b98-9393186862b5.webp&sig=Y9bMrs4C6DaK7DgNy6MyNZxMEJN3/tdW96YcEZ8Uj/8%3D
+Banan https://files.oaiusercontent.com/file-rPKgsGBu53iVdL4mCFwv71A9?se=2024-11-26T12%3A00%3A13Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D039a1911-6047-4c08-97c2-4bd305756716.webp&sig=LRu4RPuKdB47XxQSjHhOJ6L6h0lbONPnzzxJXFaimdE%3D
+MElon https://files.oaiusercontent.com/file-Cm8jhKjkdgAYTtcHkrJb8geQ?se=2024-11-26T13%3A19%3A56Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Db38a8ada-9797-466b-9184-df93b074244d.webp&sig=tIKRgBd2GcpkBUGd/yrIJU8kz8BCJWuLPiiMbN4cD3E%3D

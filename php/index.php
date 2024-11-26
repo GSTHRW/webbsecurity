@@ -17,6 +17,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p>Price: $<?= $product['price']; ?></p>
             <p>Days old: <?= $product['age']; ?></p>
             <form action="cart.php" method="POST">
+                <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
                 <button type="submit">Add to Cart</button>
             </form>
         </div>

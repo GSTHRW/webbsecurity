@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $cartItems = [];
 if (!empty($_SESSION['cart'])) {
-    $ids = implode(',', array_keys($_SESSION['cart']));
+    $ids = implode(',', array_filter(array_keys($_SESSION['cart'])));
     $stmt = $pdo->query("SELECT * FROM products WHERE id IN ($ids)");
     $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

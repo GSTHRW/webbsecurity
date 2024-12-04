@@ -11,17 +11,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $stmt->fetchColumn() * $qty;
     }, array_keys($_SESSION['cart']), $_SESSION['cart']));
 
-    $stmt = $pdo->prepare("INSERT INTO orders (user_name, user_email, total) VALUES (?, ?, ?)");
-    $stmt->execute([$name, $email, $total]);
+    $stmt = $pdo->prepare("INSERT INTO orders (user_name, user_email, total, order_id) VALUES (?, ?, ?, ?)");
     $orderId = $pdo->lastInsertId();
+    $stmt->execute([$name, $email, $total, $orderId]);
+    
+    // Order_ID variable does not work as intented.
 
     foreach ($_SESSION['cart'] as $id => $qty) {
-        $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)");
-        $stmt->execute([$orderId, $id, $qty]);
+        $stmt = $pdo->prepare("INSERT INTO order_items (product_id, quantity, order_id) VALUES (?, ?, ?)");
+        $stmt->execute([$id, $qty, $orderId]);
+
+        // Uncomment to remove the products after purchase
+        //$stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+        //$stmt->execute([$id]);
     }
 
     $_SESSION['cart'] = [];
+
     echo "<p class='success-message'>Order placed successfully!</p>";
+    sleep(3);
+    header("Location: /php");
+    exit();
 }
 ?>
 <!DOCTYPE html>

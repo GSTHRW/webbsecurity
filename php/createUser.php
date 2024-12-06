@@ -25,9 +25,10 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = validate($_POST['username']);
     $password = validate($_POST['password']);
+    $adress = validate($_POST['adress']);
 
-    $result = registerUser($username, $password, $pdo);
-    
+    $result = registerUser($username, $password, $adress, $pdo);
+
     if ($result === 'User registered successfully!') {
         $success = $result;
     } else {
@@ -35,10 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-function registerUser($username, $password, $pdo) {
+function registerUser($username, $password, $adress, $pdo) {
     // Validate and sanitize inputs
     $username = validate($username);
     $password = validate($password);
+    $adress = validate($adress);
 
     // Check if the username already exists
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM login WHERE username = ?");
@@ -54,7 +56,7 @@ function registerUser($username, $password, $pdo) {
 
     // Insert the new user into the database
     $stmt = $pdo->prepare("INSERT INTO login (username, password) VALUES (?, ?)");
-    $stmt->execute([$username, $hashedPassword]);
+    $stmt->execute([$username, $hashedPassword, $adress]);
 
     return 'User registered successfully!';
 }
@@ -83,6 +85,9 @@ function registerUser($username, $password, $pdo) {
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Password" required class="form-input">
+            </div>
+            <div class="form-group">
+                <input type="adress" name="adress" placeholder="Adress" required class="form-input">
             </div>
             <button type="submit" class="signup-button">Sign Up</button>
         </form>

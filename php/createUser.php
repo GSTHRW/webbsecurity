@@ -124,6 +124,8 @@ function registerUser($username, $password, $user_email, $full_name, $adress, $p
 
           
             <button type="submit" class="signup-button">Sign Up</button>
+
+            <a href="index.php" class="signup-button">Go to Login page</a>
         </form>
     </div>
 </body>

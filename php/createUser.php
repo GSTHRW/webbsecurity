@@ -30,10 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = registerUser($username, $password, $adress, $pdo);
 
     if ($result === 'User registered successfully!') {
-        $success = $result;
+        header('Location: index.php');
+        exit;
     } else {
         $error = $result;
     }
+    
 }
 
 function registerUser($username, $password, $adress, $pdo) {

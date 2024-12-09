@@ -35,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $result = registerUser($username, $password, $user_email, $full_name, $adress, $pdo);
 
+
+    createWallet();
+
     if ($result === 'User registered successfully!') {
         header('Location: index.php');
         exit;
@@ -96,6 +99,10 @@ function isPasswordBlacklisted($password) {
     return in_array(strtolower($password), array_map('strtolower', $blacklistedPasswords));
 }
 
+function createWallet(){
+
+    
+}
 
 
 ?>

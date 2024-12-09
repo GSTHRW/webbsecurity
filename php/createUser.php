@@ -25,9 +25,11 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = validate($_POST['username']);
     $password = validate($_POST['password']);
+    $user_email = validate($_POST['user_email']);
+    $full_name = validate($_POST['full_name']);
     $adress = validate($_POST['adress']);
 
-    $result = registerUser($username, $password, $adress, $pdo);
+    $result = registerUser($username, $password, $user_email, $full_name, $adress, $pdo);
 
     if ($result === 'User registered successfully!') {
         header('Location: index.php');
@@ -38,10 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
 }
 
-function registerUser($username, $password, $adress, $pdo) {
+function registerUser($username, $password, $user_email, $full_name, $adress, $pdo) {
     // Validate and sanitize inputs
     $username = validate($username);
     $password = validate($password);
+    $user_email = validate($user_email);
+    $full_name = validate($full_name);
     $adress = validate($adress);
 
     // Check if the username already exists
@@ -53,6 +57,20 @@ function registerUser($username, $password, $adress, $pdo) {
         return 'Username already taken';
     }
 
+    // Check if the email already exists
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM login WHERE user_email = ?");
+    $stmt->execute([$user_email]);
+    $emailExists = $stmt->fetchColumn() > 0;
+
+    if ($emailExists) {
+        return 'Email already in use';
+    }
+
+    /* AVKOMMENTERA SENARE
+    if (!isPasswordStrong($password)) {
+        return 'Password does not meet strength requirements';
+    }
+*/
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -82,15 +100,29 @@ function registerUser($username, $password, $adress, $pdo) {
             <p class="success-message"><?= htmlspecialchars($success); ?></p>
         <?php endif; ?>
         <form action="createUser.php" method="POST" class="signup-form">
+
             <div class="form-group">
                 <input type="text" name="username" placeholder="Username" required class="form-input">
             </div>
+
             <div class="form-group">
                 <input type="password" name="password" placeholder="Password" required class="form-input">
             </div>
+
+            <div class="form-group">
+                <input type="user_email" name="user_email" placeholder="Email" required class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <input type="full_name" name="full_name" placeholder="Full name" required class="form-input">
+            </div>
+            
+
             <div class="form-group">
                 <input type="adress" name="adress" placeholder="Adress" required class="form-input">
             </div>
+
+          
             <button type="submit" class="signup-button">Sign Up</button>
         </form>
     </div>

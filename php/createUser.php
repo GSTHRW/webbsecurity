@@ -75,8 +75,8 @@ function registerUser($username, $password, $user_email, $full_name, $adress, $p
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert the new user into the database
-    $stmt = $pdo->prepare("INSERT INTO login (username, password, address) VALUES (?, ?, ?)");
-    $stmt->execute([$username, $hashedPassword, $adress]);
+    $stmt = $pdo->prepare("INSERT INTO login (username, password, address, user_email, full_name) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$username, $hashedPassword, $user_email, $full_name, $adress]);
 
     return 'User registered successfully!';
 }

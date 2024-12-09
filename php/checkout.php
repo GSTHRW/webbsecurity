@@ -1,37 +1,73 @@
 <?php
 session_start();
-require 'db.php';
 
+require 'dbStore.php'; // Anslutning till store-databasen
+
+// Kontrollera om kundvagnen är tom
+if (empty($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+    echo "<p class='error-message'>Your cart is empty. Please add items to proceed.</p>";
+    header("Refresh: 3; url=/cart");
+    exit;
+}
+
+$total = 0;
+$cartItems = [];
+
+// Hämta produktinformation från databasen och beräkna totalbeloppet
+foreach ($_SESSION['cart'] as $id => $qty) {
+    $stmt = $pdo->prepare("SELECT name, price FROM products WHERE id = ?");
+    $stmt->execute([$id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($product) {
+        $productTotal = $product['price'] * $qty;
+        $total += $productTotal;
+        $cartItems[] = [
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'quantity' => $qty,
+            'total' => $productTotal
+        ];
+    }
+}
+
+// Om användaren klickar på "Confirm and Pay"
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $total = array_sum(array_map(function ($id, $qty) use ($pdo) {
-        $stmt = $pdo->prepare("SELECT price FROM products WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetchColumn() * $qty;
-    }, array_keys($_SESSION['cart']), $_SESSION['cart']));
+    $username = trim($_POST['username']);
+    $address = trim($_POST['address']);
 
-    $stmt = $pdo->prepare("INSERT INTO orders (username, user_email, total, order_id) VALUES (?, ?, ?, ?)");
-    $orderId = $pdo->lastInsertId();
-    $stmt->execute([$name, $email, $total, $orderId]);
-    
-    // Order_ID variable does not work as intented.
-
-    foreach ($_SESSION['cart'] as $id => $qty) {
-        $stmt = $pdo->prepare("INSERT INTO order_items (product_id, quantity, order_id) VALUES (?, ?, ?)");
-        $stmt->execute([$id, $qty, $orderId]);
-
-        // Uncomment to remove the products after purchase
-        //$stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
-        //$stmt->execute([$id]);
+    // Validering av inmatning
+    if (empty($username) || empty($address)) {
+        echo "<p class='error-message'>Username and address are required!</p>";
+        header("Refresh: 3; url=/checkout");
+        exit;
     }
 
-    $_SESSION['cart'] = [];
+    try {
+        // Lägg till order i store-databasens orders-tabell
+        $stmt = $pdoStore->prepare("INSERT INTO orders (username, address, total) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $address, $total]);
 
-    echo "<p class='success-message'>Order placed successfully!</p>";
-    sleep(3);
-    header("Location: /php");
-    exit();
+        // Hämta det senaste order-ID:t
+        $orderId = $pdoStore->lastInsertId();
+
+        // Lägg till varje produkt i order_items-tabellen
+        foreach ($cartItems as $item) {
+            $stmt = $pdoStore->prepare("INSERT INTO order_items (product_id, quantity, order_id) VALUES (?, ?, ?)");
+            $stmt->execute([$id, $item['quantity'], $orderId]);
+        }
+
+        // Töm kundvagnen
+        $_SESSION['cart'] = [];
+
+        echo "<p class='success-message'>Order placed successfully!</p>";
+        header("Refresh: 3; url=/php");
+        exit;
+    } catch (Exception $e) {
+        error_log("Order error: " . $e->getMessage());
+        echo "<p class='error-message'>Something went wrong while processing your order. Please try again later.</p>";
+        header("Refresh: 5; url=/php/checkout");
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -43,15 +79,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Checkout</h1>
-        <form action="checkout.php" method="POST" class="checkout-form">
-            <div class="form-group">
-                <input type="text" name="name" placeholder="Full Name" required class="form-input">
-            </div>
-            <div class="form-group">
-                <input type="email" name="email" placeholder="Email" required class="form-input">
-            </div>
-            <button type="submit" class="checkout-button">Place Order</button>
-        </form>
+        <h2>Order Summary</h2>
+        <table class="order-summary">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($cartItems as $item): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($item['name']); ?></td>
+                    <td><?php echo number_format($item['price'], 2); ?> $</td>
+                    <td><?php echo $item['quantity']; ?></td>
+                    <td><?php echo number_format($item['total'], 2); ?> $</td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;">Total:</td>
+                    <td><?php echo number_format($total, 2); ?> $</td>
+                </tr>
+            </tfoot>
+        </table>
+        <button type="submit" class="confirmAndPayButton">Confirm and Pay</button>
     </div>
 </body>
+
+<script>
+    document.getElementById('confirmAndPayButton').addEventListener('click', function() {
+        window.location.href = "orderConfirmation.php";
+    });
+</script>
+
 </html>

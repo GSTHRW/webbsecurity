@@ -9,6 +9,10 @@ function validate($data) {
 }
 
 function isPasswordStrong($password) {
+
+    if(isPasswordBlacklisted($password)){
+        return false;
+    }
     // Check if password meets strength requirements
     $length = strlen($password) >= 8; // Minimum length
     $uppercase = preg_match('/[A-Z]/', $password); // At least one uppercase letter
@@ -81,6 +85,16 @@ function registerUser($username, $password, $user_email, $full_name, $adress, $p
     return 'User registered successfully!';
 }
 
+
+function isPasswordBlacklisted($password) {
+    $filePath = 'unsecurepswd.txt'; // Filens namn
+
+    // Läs filen till en array, varje rad blir ett element i arrayen
+    $blacklistedPasswords = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    // Kontrollera om lösenordet finns i listan (case-insensitiv jämförelse)
+    return in_array(strtolower($password), array_map('strtolower', $blacklistedPasswords));
+}
 
 
 

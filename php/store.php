@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require 'dbStore.php';
 
 $stmt = $pdo->query("SELECT * FROM products");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);

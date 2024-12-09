@@ -1,37 +1,50 @@
 <?php
 session_start();
-require 'db.php';
+require 'dbLogin.php';
 
-$stmt = $pdo->query("SELECT * FROM products");
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+   
+    $stmt = $pdo->prepare("SELECT * FROM login WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Verify the user and password
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user'] = $user['username']; // Store username in session
+        header('Location: store.php'); // Redirect to the store
+        exit;
+    } else {
+        $error = 'Invalid username or password';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Store</title>
+    <title>Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="container">
-        <h1>Products</h1>
-        <h3><?=$_SESSION['user']?></h3>
-        <div class="product-list">
-            <?php foreach ($products as $product): ?>
-                <div class="product-container">
-                    <?php if (!empty($product['image_url'])): ?>
-                        <img src="<?= htmlspecialchars($product['image_url']); ?>" alt="<?= htmlspecialchars($product['name']); ?>" class="product-image">
-                    <?php endif; ?>
-                    <h2 class="product-name"><?= htmlspecialchars($product['name']); ?></h2>
-                    <p class="product-price">Price: $<?= htmlspecialchars($product['price']); ?></p>
-                    <p class="product-age">Days old: <?= htmlspecialchars($product['age']); ?></p>
-                    <form action="cart.php" method="POST">
-                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
-                        <button class="add-to-cart" type="submit">Add to Cart</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
-        </div>
+        <h1>Login</h1>
+        <?php if ($error): ?>
+            <p class="error-message"><?= htmlspecialchars($error); ?></p>
+        <?php endif; ?>
+        <form action="login.php" method="POST" class="login-form">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required class="form-input">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required class="form-input">
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <a href="createUser.php" class="signup-button">Sign Up</a>
     </div>
 </body>
 </html>

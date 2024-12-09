@@ -33,6 +33,7 @@ if (!empty($_SESSION['cart'])) {
             <?php endforeach; ?>
         </div>
         <a href="checkout.php" class="proceed-to-checkout">Proceed to Checkout</a>
+        <a href="store.php" class="proceed-to-checkout">Continue shopping</a>
     </div>
 </body>
 </html>

@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $stmt->fetchColumn() * $qty;
     }, array_keys($_SESSION['cart']), $_SESSION['cart']));
 
-    $stmt = $pdo->prepare("INSERT INTO orders (user_name, user_email, total, order_id) VALUES (?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO orders (username, user_email, total, order_id) VALUES (?, ?, ?, ?)");
     $orderId = $pdo->lastInsertId();
     $stmt->execute([$name, $email, $total, $orderId]);
     

@@ -55,7 +55,7 @@ function registerUser($username, $password, $adress, $pdo) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert the new user into the database
-    $stmt = $pdo->prepare("INSERT INTO login (username, password) VALUES (?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO login (username, password, address) VALUES (?, ?, ?)");
     $stmt->execute([$username, $hashedPassword, $adress]);
 
     return 'User registered successfully!';
@@ -79,7 +79,7 @@ function registerUser($username, $password, $adress, $pdo) {
         <?php elseif ($success): ?>
             <p class="success-message"><?= htmlspecialchars($success); ?></p>
         <?php endif; ?>
-        <form action="signup.php" method="POST" class="signup-form">
+        <form action="createUser.php" method="POST" class="signup-form">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Username" required class="form-input">
             </div>

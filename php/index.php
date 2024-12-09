@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'db.php';
 
 $stmt = $pdo->query("SELECT * FROM products");
@@ -11,8 +12,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <div class="container">
         <h1>Products</h1>
+        <h3><?=$_SESSION['user']?></h3>
         <div class="product-list">
             <?php foreach ($products as $product): ?>
                 <div class="product-container">

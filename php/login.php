@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verify the user and password
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = $user['username']; // Store username in session
-        header('Location: store.php'); // Redirect to the store
+        header('Location: index.php'); // Redirect to the store
         exit;
     } else {
         $error = 'Invalid username or password';

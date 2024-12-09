@@ -31,18 +31,11 @@ foreach ($_SESSION['cart'] as $id => $qty) {
 }
 
 // Om användaren klickar på "Confirm and Pay"
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $address = trim($_POST['address']);
 
-    // Validering av inmatning
-    if (empty($username) || empty($address)) {
-        echo "<p class='error-message'>Username and address are required!</p>";
-        header("Refresh: 3; url=/checkout");
-        exit;
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
+        /*
         // Lägg till order i store-databasens orders-tabell
         $stmt = $pdoStore->prepare("INSERT INTO orders (username, address, total) VALUES (?, ?, ?)");
         $stmt->execute([$username, $address, $total]);
@@ -55,12 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdoStore->prepare("INSERT INTO order_items (product_id, quantity, order_id) VALUES (?, ?, ?)");
             $stmt->execute([$id, $item['quantity'], $orderId]);
         }
+*/
+        // Töm kundvagnen och spara order-ID i session
+        $_SESSION['cartItems'] = $cartItems;
+        $_SESSION['totalAmount'] = $total;
+        
+        $_SESSION['latest_order_id'] = $orderId;
 
-        // Töm kundvagnen
-        $_SESSION['cart'] = [];
 
-        echo "<p class='success-message'>Order placed successfully!</p>";
-        header("Refresh: 3; url=/php");
+
+        // Skicka användaren till bekräftelsesidan
+        header("Location: orderConfirmation.php");
         exit;
     } catch (Exception $e) {
         error_log("Order error: " . $e->getMessage());
@@ -69,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -106,14 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
             </tfoot>
         </table>
-        <button type="submit" class="confirmAndPayButton">Confirm and Pay</button>
+
+        <form method="POST" action="checkout.php">
+            <input type="hidden" name="username" value="testuser"> <!-- Replace with actual user data -->
+            <input type="hidden" name="address" value="testaddress"> <!-- Replace with actual address -->
+            <button type="submit" id="confirmAndPayButton" class="confirmAndPayButton">Confirm and Pay</button>
+        </form>
     </div>
 </body>
-
-<script>
-    document.getElementById('confirmAndPayButton').addEventListener('click', function() {
-        window.location.href = "orderConfirmation.php";
-    });
-</script>
-
 </html>

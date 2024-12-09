@@ -4,7 +4,28 @@ require 'dbLogin.php';
 
 $error = '';
 
+if(isset($_SESSION['user'])){
+    header('Location: index.php');
+}
+
+$maxAttempts = 3; 
+$lockoutDuration = 20;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!isset($_SESSION['failed_login_attempts'])) {
+        $_SESSION['failed_login_attempts'] = 0;
+    }
+
+    if ($_SESSION['failed_login_attempts'] >= $maxAttempts) {
+        $_SESSION['lockout_time'] = time() + $lockoutDuration;
+    }
+
+    if(isset($_SESSION['lockout_time']) && $_SESSION['lockout_time'] > time()){
+        $_SESSION['failed_login_attempts'] = 0;
+        die("Account is temporarily locked for 5 Please try again later.");
+    }
+
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -19,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: index.php'); // Redirect to the store
         exit;
     } else {
+        $_SESSION['failed_login_attempts']++;
         $error = 'Invalid username or password';
     }
 }

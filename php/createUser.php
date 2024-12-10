@@ -75,11 +75,11 @@ function registerUser($username, $password, $user_email, $full_name, $adress, $p
         return 'Email already in use';
     }
 
-    /* AVKOMMENTERA SENARE
+    /*
     if (!isPasswordStrong($password)) {
         return 'Password does not meet strength requirements';
-    }
-*/
+    }*/
+
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 

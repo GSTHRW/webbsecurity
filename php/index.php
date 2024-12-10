@@ -4,11 +4,11 @@ require 'dbLogin.php';
 
 $error = '';
 
-/*
+
 if(isset($_SESSION['user'])){
     header('Location: store.php');
 }
-*/
+
 $maxAttempts = 3; 
 $lockoutDuration = 20;
 
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <p class="error-message"><?= htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form action="login.php" method="POST" class="login-form">
+        <form action="index.php" method="POST" class="login-form">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Username" required class="form-input">
             </div>

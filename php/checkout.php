@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 */
         // Töm kundvagnen och spara order-ID i session
+        $_SESSION['cart'] = [];
         $_SESSION['cartItems'] = $cartItems;
         $_SESSION['totalAmount'] = $total;
         
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Skicka användaren till bekräftelsesidan
         header("Location: orderConfirmation.php");
-        exit;
+        //exit;
     } catch (Exception $e) {
         error_log("Order error: " . $e->getMessage());
         echo "<p class='error-message'>Something went wrong while processing your order. Please try again later.</p>";

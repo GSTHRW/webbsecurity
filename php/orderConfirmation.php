@@ -2,6 +2,7 @@
 session_start();
 require 'dbStore.php'; // Anslutning till store-databasen
 
+//test
 
 $orderId = $_SESSION['latest_order_id'];
 

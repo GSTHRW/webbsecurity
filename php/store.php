@@ -2,6 +2,12 @@
 session_start();
 require 'dbStore.php';
 
+if(!isset($_SESSION['user'])){
+    header('Location: index.php');
+}
+
+$csrfToken = $_SESSION['csrf_token'];
+
 $stmt = $pdo->query("SELECT * FROM products");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -16,7 +22,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <h1>Products</h1>
         <h3><?=$_SESSION['user']?></h3>
-        <a href="logout.php">Logout</a>
+        <form action="logout.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+            <button type="submit">Logout</button>
+        </form>
         <div class="product-list">
             <?php foreach ($products as $product): ?>
                 <div class="product-container">
@@ -27,6 +36,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p class="product-price">Price: $<?= htmlspecialchars($product['price']); ?></p>
                     <p class="product-age">Days old: <?= htmlspecialchars($product['age']); ?></p>
                     <form action="cart.php" method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
                         <button class="add-to-cart" type="submit">Add to Cart</button>
                     </form>

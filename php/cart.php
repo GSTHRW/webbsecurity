@@ -2,6 +2,11 @@
 session_start();
 require 'dbStore.php';
 
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    die("CSRF token validation failed.");
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productId = $_POST['product_id'];
     $_SESSION['cart'][$productId] = ($_SESSION['cart'][$productId] ?? 0) + 1;

@@ -12,6 +12,7 @@ if (empty($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
 
 $total = 0;
 $cartItems = [];
+$csrfToken = $_SESSION['csrf_token'];
 
 // Hämta produktinformation från databasen och beräkna totalbeloppet
 foreach ($_SESSION['cart'] as $id => $qty) {
@@ -33,6 +34,9 @@ foreach ($_SESSION['cart'] as $id => $qty) {
 // Om användaren klickar på "Confirm and Pay"
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
 
     try {
         /*
@@ -108,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </table>
 
         <form method="POST" action="checkout.php">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input type="hidden" name="username" value="testuser"> <!-- Replace with actual user data -->
             <input type="hidden" name="address" value="testaddress"> <!-- Replace with actual address -->
             <button type="submit" id="confirmAndPayButton" class="confirmAndPayButton">Confirm and Pay</button>

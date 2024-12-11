@@ -4,7 +4,6 @@ require 'dbLogin.php';
 
 $error = '';
 
-
 if(isset($_SESSION['user'])){
     header('Location: store.php');
 }
@@ -38,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verify the user and password
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = $user['username']; // Store username in session
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         header('Location: store.php'); // Redirect to the store
         exit;
     } else {

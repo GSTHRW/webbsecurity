@@ -2,6 +2,10 @@
 session_start();
 require 'dbStore.php';
 
+if(!isset($_SESSION['user'])){
+    header('Location: index.php');
+}
+
 $stmt = $pdo->query("SELECT * FROM products");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>

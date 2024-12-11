@@ -16,7 +16,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <h1>Products</h1>
         <h3><?=$_SESSION['user']?></h3>
-        <a href="logout.php">Logout</a>
+        <form action="logout.php" method="POST">
+            <button type="submit">Logout</button>
+        </form>
         <div class="product-list">
             <?php foreach ($products as $product): ?>
                 <div class="product-container">

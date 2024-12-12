@@ -6,6 +6,9 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
     die("CSRF token validation failed.");
 }
 
+if(!isset($_SESSION['user'])){
+    header('Location: index.php');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productId = $_POST['product_id'];

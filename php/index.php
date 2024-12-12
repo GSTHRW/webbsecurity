@@ -1,4 +1,9 @@
 <?php
+// Set the session lifetime to 30 minutes
+ini_set('session.gc_maxlifetime', 1800);
+// Set the session cookie to expire in 30 minutes
+ini_set('session.cookie_lifetime', 1800);
+
 session_start();
 require 'dbLogin.php';
 

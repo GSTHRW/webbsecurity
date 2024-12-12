@@ -30,10 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-   
-    $stmt = $pdo->prepare("SELECT * FROM login WHERE username = ?");
-    $stmt->execute([$username]);
+    $sql = "SELECT * FROM login WHERE username = '$username'";
+    $stmt = $pdo->query($sql); // Using query() instead of prepare() makes it more vulnerable
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    /*$stmt = $pdo->prepare("SELECT * FROM login WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);*/
+    //echo $user['password'];
 
     // Verify the user and password
     if ($user && password_verify($password, $user['password'])) {

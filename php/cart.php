@@ -2,6 +2,10 @@
 session_start();
 require 'dbStore.php';
 
+if(!isset($_SESSION['user'])){
+    header('Location: index.php');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productId = $_POST['product_id'];
     $_SESSION['cart'][$productId] = ($_SESSION['cart'][$productId] ?? 0) + 1;

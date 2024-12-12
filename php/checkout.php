@@ -3,6 +3,11 @@ session_start();
 
 require 'dbStore.php'; // Anslutning till store-databasen
 
+
+if(!isset($_SESSION['user'])){
+    header('Location: index.php');
+}
+
 // Kontrollera om kundvagnen är tom
 if (empty($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
     echo "<p class='error-message'>Your cart is empty. Please add items to proceed.</p>";

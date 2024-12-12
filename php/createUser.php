@@ -20,7 +20,7 @@ function isPasswordStrong($password) {
     $uppercase = preg_match('/[A-Z]/', $password); // At least one uppercase letter
     $lowercase = preg_match('/[a-z]/', $password); // At least one lowercase letter
     $number = preg_match('/[0-9]/', $password); // At least one number
-    $specialChar = preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password); // At least one special character
+    $specialChar = preg_match('/[!@#$%^*(),.?:{}|]/', $password); // At least one special character
 
     return $length && $uppercase && $lowercase && $number && $specialChar;
 }

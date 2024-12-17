@@ -31,8 +31,17 @@ $totalAmount = $_SESSION['totalAmount'];
     <div class="container">
         <h1>Order Confirmation</h1>
         <p>Your order has been successfully reserved! Send the <?php echo $totalAmount ?> Simplecoins to our wallet <br></p>
-        <p><strong>Site Wallet ID:</strong> <?php echo $siteWalletId; ?></p>
+        <p> <br> <strong>Site Wallet ID:</strong> <?php echo $siteWalletId; ?></p>
         <p> Use the wallet ID to complete your payment.</p>
+
+
+        <p> <br> Insert your public key here: </p>
+
+        <div class="form-group">
+            <input type="text" name="publicKey" placeholder="Public Key" required class="form-input">
+            <button type="submit">Add to Database</button>
+        </div>
+
         <a href="/php">Return to Home</a>
     </div>
 </body>
